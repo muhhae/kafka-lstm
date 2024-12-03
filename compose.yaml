@@ -1,0 +1,10 @@
+services:
+  broker:
+      image: apache/kafka:latest
+      container_name: broker
+      ports:
+        - 9092:9092
+      volumes:
+        - kafka_data:/var/lib/kafka/data
+volumes:
+  kafka_data:
