@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/segmentio/kafka-go"
@@ -17,25 +18,18 @@ type Data struct {
 }
 
 func main() {
+	addr := os.Getenv("ADDR")
 	writers := []*kafka.Writer{
 		{
-			Addr:                   kafka.TCP("localhost:9092"),
+			Addr:                   kafka.TCP(addr),
 			Topic:                  "temp_1",
 			AllowAutoTopicCreation: true,
 		}, {
-			Addr:                   kafka.TCP("localhost:9092"),
-			Topic:                  "temp_2",
-			AllowAutoTopicCreation: true,
-		}, {
-			Addr:                   kafka.TCP("localhost:9092"),
+			Addr:                   kafka.TCP(addr),
 			Topic:                  "humid_1",
 			AllowAutoTopicCreation: true,
 		}, {
-			Addr:                   kafka.TCP("localhost:9092"),
-			Topic:                  "humid_2",
-			AllowAutoTopicCreation: true,
-		}, {
-			Addr:                   kafka.TCP("localhost:9092"),
+			Addr:                   kafka.TCP(addr),
 			Topic:                  "light_intensity",
 			AllowAutoTopicCreation: true,
 		},
@@ -73,7 +67,7 @@ func main() {
 			err = w.WriteMessages(context.Background(),
 				kafka.Message{
 					Key:   []byte("value"),
-					Value: []byte(fmt.Sprintf("%f", result[i].Value)),
+					Value: []byte(fmt.Sprintf("%f", result[i*2].Value)),
 				},
 				kafka.Message{
 					Key:   []byte("timestamp"),

@@ -1,4 +1,10 @@
 services:
+  fetcher:
+    build: .
+    environment:
+      - ADDR=broker:9092
+    depends_on:
+      - broker
   broker:
       image: apache/kafka:latest
       container_name: broker
